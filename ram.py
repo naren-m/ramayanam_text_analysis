@@ -38,6 +38,12 @@ def readSlokaFile(fname):
 
 readSlokaFile(fileName)
 
+from .database import Database
+import database
+
+db = database.Database('./ramayanam.db')
+with db:
+    rows = db.get(table='slokas', columns='*')
 
 
-
+print(rows)

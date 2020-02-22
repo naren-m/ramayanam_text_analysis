@@ -7,6 +7,7 @@ class Ramayana:
                           4: {'id': 4, 'name': "KishkindaKanda", 'sargas': 67},
                           5: {'id': 5, 'name': "SundaraKanda", 'sargas': 68}}
         self.kandas = dict()
+        self._dbName = './ramayanam.db'
 
     def addKanda(self, kanda):
         self.kandas[kanda.number] = kanda
@@ -23,7 +24,7 @@ class Kanda:
     def sargas(self):
         return self.sargas
 
-    def addSaraga(self, sarga):
+    def addSarga(self, sarga):
         self.sargas[sarga.number] = sarga
 
 
