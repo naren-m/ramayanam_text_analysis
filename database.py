@@ -60,7 +60,7 @@ class Database:
         self.cursor.execute(query)
 
     def query(self, sql):
-        self.cursor.execte(sql)
+        self.cursor.execute(sql)
 
     @staticmethod
     def summary(rows):

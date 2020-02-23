@@ -1,16 +1,51 @@
+from database import Database
+
 
 class Ramayana:
-    def __init__(self):
-        self._metadata = {1: {'id': 1, 'name': "BalaKanda", 'sargas': 77},
-                          2: {'id': 2, 'name': "AyodhyaKanda", 'sargas': 119},
-                          3: {'id': 3, 'name': "AranyaKanda", 'sargas': 75},
-                          4: {'id': 4, 'name': "KishkindaKanda", 'sargas': 67},
-                          5: {'id': 5, 'name': "SundaraKanda", 'sargas': 68}}
+    def __init__(self, dbName=None):
+        self._kandaDetails = {
+            1: {
+                'id': 1,
+                'name': "BalaKanda",
+                'sargas': 77
+            },
+            2: {
+                'id': 2,
+                'name': "AyodhyaKanda",
+                'sargas': 119
+            },
+            3: {
+                'id': 3,
+                'name': "AranyaKanda",
+                'sargas': 75
+            },
+            4: {
+                'id': 4,
+                'name': "KishkindaKanda",
+                'sargas': 67
+            },
+            5: {
+                'id': 5,
+                'name': "SundaraKanda",
+                'sargas': 68
+            }
+        }
         self.kandas = dict()
-        self._dbName = './ramayanam.db'
+
+        if dbName is None:
+            self._dbName = './ramayanam.db'
+        else:
+            self._dbName = dbName
+
+        self._db = Database(self._dbName)
 
     def addKanda(self, kanda):
         self.kandas[kanda.number] = kanda
+
+    def _loadFromDB(self):
+        for k, v in self._kandaDetails.items():
+            print(k, v)
+            kanda = Kanda(name=v['name'], number=k, totalSargas=v['sargas'])
 
 
 class Kanda:
@@ -31,26 +66,26 @@ class Kanda:
 class Sarga:
     def __init__(self, number, kanda):
         self.number = number
-        self.kanda = kanda
+        self._kanda = kanda
         self.slokas = dict()
 
     @property
     def slokas(self):
         return self.slokas
-    
+
     def addSloka(self, sloka):
         self.slokas[sloka.number] = sloka
 
 
 class Sloka:
-    def __init__(self, number, kanda, sarga):
+    def __init__(self, sarga, number, text, meaning, translation):
         self.number = number
-        self.kanda = kanda
         self.sarga = sarga
+        self.kanda = sarga.kanda
 
-        self._text = None
-        self._meaning = None
-        self._translation = None
+        self._text = text
+        self._meaning = meaning
+        self._translation = translation
 
     @property
     def meaning(self):
@@ -64,14 +99,5 @@ class Sloka:
     def text(self):
         return self._text
 
-    @meaning.setter
-    def meaning(self, meaning):
-        self._meaning = meaning
-
-    @translation.setter
-    def translation(self, translation):
-        self._translation = translation
-
-    @text.setter
-    def text(self, text):
-        self._text = text
+    def __str__(self):
+        return self.text
