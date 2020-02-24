@@ -1,9 +1,28 @@
 from database import Database
 
+class AttrDict(dict):
+    def __setattr__(self, attr, value):
+        self[attr] = value
+
+    def __getattr__(self, attr):
+        try:
+            return self[attr]
+        except KeyError:
+            raise AttributeError(attr) from None
+
+    def __delattr__(self, attr):
+        try:
+            del self[attr]
+        except KeyError:
+            raise AttributeError(attr) from None
+
+    def __dir__(self):
+        return list(self) + dir(dict)
+
 
 class Ramayana:
     def __init__(self, dbName=None):
-        self._kandaDetails = {
+        self._kandaDetails = dict({
             1: {
                 'id': 1,
                 'name': "BalaKanda",
@@ -29,7 +48,7 @@ class Ramayana:
                 'name': "SundaraKanda",
                 'sargas': 68
             }
-        }
+        })
         self.kandas = dict()
 
         if dbName is None:
@@ -42,10 +61,12 @@ class Ramayana:
     def addKanda(self, kanda):
         self.kandas[kanda.number] = kanda
 
-    def _loadFromDB(self):
+    def loadFromDB(self):
         for k, v in self._kandaDetails.items():
-            print(k, v)
-            kanda = Kanda(name=v['name'], number=k, totalSargas=v['sargas'])
+            kanda = Kanda.createKandaFromDict(v, db=self._db)
+            self.addKanda(kanda)
+
+        self._db.close()
 
 
 class Kanda:
@@ -55,37 +76,59 @@ class Kanda:
         self.totalSargas = totalSargas
         self.sargas = dict()
 
-    @property
-    def sargas(self):
-        return self.sargas
-
     def addSarga(self, sarga):
         self.sargas[sarga.number] = sarga
 
+    def __str__(self):
+        return '{} has {} sargas'.format(self.name, self.totalSargas)
+
+    @classmethod
+    def createKandaFromDict(cls, kandaMetadata, db):
+        kanda = cls(name=kandaMetadata['name'], number=kandaMetadata['id'], totalSargas=kandaMetadata['sargas'])
+        for s in range(kanda.totalSargas):
+            sarga = Sarga.loadFromDB(number=s, kanda=kanda, db=db)
+            kanda.addSarga(sarga)
+        return kanda
 
 class Sarga:
     def __init__(self, number, kanda):
         self.number = number
-        self._kanda = kanda
+        self.kanda = kanda
         self.slokas = dict()
-
-    @property
-    def slokas(self):
-        return self.slokas
 
     def addSloka(self, sloka):
         self.slokas[sloka.number] = sloka
+
+    def __str__(self):
+        return 'Sarga {} of {} has {} slokas'.format(self.number, self.kanda.name, len(self.slokas))
+
+    @classmethod
+    def loadFromDB(cls, number, kanda, db):
+        sarga = cls(number=number, kanda=kanda)
+        columns = 'kanda_id, sarga_id, sloka_id, sloka, meaning, translation'
+        where = 'kanda_id={} and sarga_id={}'.format(kanda.number, sarga.number)
+        rows = db.get(table='slokas', columns=columns, where=where)
+    
+        for row in rows:
+            row = AttrDict(row)
+            sloka = Sloka(sarga, row.sloka_id, row.sloka, row.meaning, row.translation)
+            sarga.addSloka(sloka)
+        return sarga
 
 
 class Sloka:
     def __init__(self, sarga, number, text, meaning, translation):
         self.number = number
         self.sarga = sarga
-        self.kanda = sarga.kanda
 
         self._text = text
         self._meaning = meaning
         self._translation = translation
+
+
+    @property
+    def kanda(self):
+        return self.sarga.kanda
 
     @property
     def meaning(self):
@@ -101,3 +144,9 @@ class Sloka:
 
     def __str__(self):
         return self.text
+
+    @classmethod
+    def loadFromData(cls, sarga, number, text, meaning, translation):
+        sloka = Sloka(sarga, number, text, meaning, translation)
+        return sloka
+        

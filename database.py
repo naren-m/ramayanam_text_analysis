@@ -17,8 +17,16 @@ class Database:
             self.open(name)
 
     def open(self, name):
+        def dict_factory(cursor, row):
+            d = {}
+            for idx, col in enumerate(cursor.description):
+                d[col[0]] = row[idx]
+            return d
+
         try:
             self.conn = sqlite3.connect(name)
+            self.conn.row_factory = dict_factory
+            
             self.cursor = self.conn.cursor()
 
         except sqlite3.Error as e:
@@ -36,8 +44,17 @@ class Database:
     def __exit__(self, exc_type, exc_value, traceback):
         self.close()
 
-    def get(self, table, columns, limit=None):
-        query = "SELECT {0} from {1};".format(columns, table)
+    def get(self, table, columns, limit=None, where=None, groupBy=None):
+        query = "SELECT {0} from {1}".format(columns, table)
+        
+        if where:
+            query += " WHERE {}".format(where)
+
+        if groupBy:
+            query += " GROUP BY {}".format(groupBy)
+        
+        query += ';'
+
         self.cursor.execute(query)
 
         # fetch data
