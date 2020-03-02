@@ -1,5 +1,7 @@
 from database import Database
 
+import pickle
+
 class AttrDict(dict):
     def __setattr__(self, attr, value):
         self[attr] = value
@@ -49,30 +51,29 @@ class Ramayana:
             }
         })
 
-    def __init__(self, dbName=None):
-
+    def __init__(self):
         self.kandas = dict()
-
-        if dbName is None:
-            self._dbName = './ramayanam.db'
-        else:
-            self._dbName = dbName
-
-        self._db = Database(self._dbName)
 
     def addKanda(self, kanda):
         self.kandas[kanda.number] = kanda
 
     @classmethod
-    def load(cls, dbName='./ramayanam.db', pickleFile='./ramayanam.pickle'):
-        r = cls(dbName=dbName)
-        for k, v in r.kandaDetails.items():
-            kanda = Kanda.createKandaFromDict(v, db=r._db)
-            r.addKanda(kanda)
+    def load(cls, dbName='./ramayanam.db', pickleFile='./ramayanam.pkl'):
+        if os.path.exists(pickleFile):
+            with open(pickleFile, 'rb') as f:
+                r = pickle.load(f)
+                return r
+        else:
+            r = cls()
+            db = Database(dbName)
 
-        r._db.close()
+            for k, v in r.kandaDetails.items():
+                kanda = Kanda.createKandaFromDict(v, db=db)
+                r.addKanda(kanda)
 
-        return r
+            db.close()
+
+            return r
 
 
 class Kanda:
@@ -157,4 +158,16 @@ class Sloka:
     def loadFromData(cls, sarga, number, text, meaning, translation):
         sloka = Sloka(sarga, number, text, meaning, translation)
         return sloka
-        
+
+if __name__ == "__main__":
+    r = Ramayana.load()
+
+    ramayanPickle = './ramayanam.pkl'
+    if not os.path.exists(ramayanPickle):
+        with open(ramayanPickle, 'wb') as f:
+            pickle.dump(r, f)
+
+    s = str(r.kandas[1].sargas[8].slokas[20])
+    len(r.kandas[1].sargas[8].slokas)
+    print(s)
+    print(s.encode('utf-8').decode('utf-8'))
