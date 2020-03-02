@@ -21,8 +21,7 @@ class AttrDict(dict):
 
 
 class Ramayana:
-    def __init__(self, dbName=None):
-        self._kandaDetails = dict({
+    kandaDetails = dict({
             1: {
                 'id': 1,
                 'name': "BalaKanda",
@@ -49,6 +48,9 @@ class Ramayana:
                 'sargas': 68
             }
         })
+
+    def __init__(self, dbName=None):
+
         self.kandas = dict()
 
         if dbName is None:
@@ -61,12 +63,16 @@ class Ramayana:
     def addKanda(self, kanda):
         self.kandas[kanda.number] = kanda
 
-    def loadFromDB(self):
-        for k, v in self._kandaDetails.items():
-            kanda = Kanda.createKandaFromDict(v, db=self._db)
-            self.addKanda(kanda)
+    @classmethod
+    def load(cls, dbName='./ramayanam.db', pickleFile='./ramayanam.pickle'):
+        r = cls(dbName=dbName)
+        for k, v in r.kandaDetails.items():
+            kanda = Kanda.createKandaFromDict(v, db=r._db)
+            r.addKanda(kanda)
 
-        self._db.close()
+        r._db.close()
+
+        return r
 
 
 class Kanda:
@@ -143,6 +149,8 @@ class Sloka:
         return self._text
 
     def __str__(self):
+        if not self.text:
+            return 'Something went wrong. Debug'
         return self.text
 
     @classmethod
