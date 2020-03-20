@@ -162,12 +162,9 @@ class Sloka:
 if __name__ == "__main__":
     r = Ramayana.load()
 
-    ramayanPickle = './ramayanam.pkl'
-    if not os.path.exists(ramayanPickle):
-        with open(ramayanPickle, 'wb') as f:
-            pickle.dump(r, f)
+    s = r.kandas[1].sargas[8].slokas[20]
 
-    s = str(r.kandas[1].sargas[8].slokas[20])
     len(r.kandas[1].sargas[8].slokas)
     print(s)
-    print(s.encode('utf-8').decode('utf-8'))
+    print(s.meaning)
+    print(s.translation)
