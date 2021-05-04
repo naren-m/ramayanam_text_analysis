@@ -1,6 +1,7 @@
-from database import Database
-
 import pickle
+import os
+
+from database import Database
 
 class AttrDict(dict):
     def __setattr__(self, attr, value):
@@ -115,7 +116,7 @@ class Sarga:
         columns = 'kanda_id, sarga_id, sloka_id, sloka, meaning, translation'
         where = 'kanda_id={} and sarga_id={}'.format(kanda.number, sarga.number)
         rows = db.get(table='slokas', columns=columns, where=where)
-    
+
         for row in rows:
             row = AttrDict(row)
             sloka = Sloka(sarga, row.sloka_id, row.sloka, row.meaning, row.translation)
