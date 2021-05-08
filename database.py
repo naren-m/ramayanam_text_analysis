@@ -26,7 +26,7 @@ class Database:
         try:
             self.conn = sqlite3.connect(name)
             self.conn.row_factory = dict_factory
-            
+
             self.cursor = self.conn.cursor()
 
         except sqlite3.Error as e:
@@ -46,13 +46,13 @@ class Database:
 
     def get(self, table, columns, limit=None, where=None, groupBy=None):
         query = "SELECT {0} from {1}".format(columns, table)
-        
+
         if where:
             query += " WHERE {}".format(where)
 
         if groupBy:
             query += " GROUP BY {}".format(groupBy)
-        
+
         query += ';'
 
         self.cursor.execute(query)
