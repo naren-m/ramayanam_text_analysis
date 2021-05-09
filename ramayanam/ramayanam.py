@@ -65,21 +65,36 @@ class Ramayanam:
 
     @classmethod
     def load(cls, dbName=DB_FILE, pickleFile=PICKLE_FILE):
-        if os.path.exists(pickleFile):
+        def _readFromPickle(pickleFile):
+            print('Reading from pickle file')
             with open(pickleFile, 'rb') as f:
                 r = pickle.load(f)
                 return r
 
-        r = cls()
-        db = Database(dbName)
+        def _readFromDB(dbName):
+            print('Reading from db')
+            r = cls()
+            db = Database(dbName)
 
-        for k, v in r.kandaDetails.items():
-            kanda = Kanda.createKandaFromDict(v, db=db)
-            r.addKanda(kanda)
+            for k, v in r.kandaDetails.items():
+                kanda = Kanda.createKandaFromDict(v, db=db)
+                r.addKanda(kanda)
 
-        db.close()
-        pickle.dump(r, PICKLE_FILE)
-        return r
+            db.close()
+            with open(PICKLE_FILE, 'wb') as f:
+                pickle.dump(r, f)
+            
+            return r
+
+
+        if pickleFile and os.path.exists(pickleFile):
+            try:
+                return _readFromPickle(pickleFile)
+            except Exception as e:
+                print('Got Exception reading from pikcle file {}'.format(e))
+                return _readFromDB(dbName)
+        else:
+            return _readFromDB(dbName)
 
 
 class Kanda:
