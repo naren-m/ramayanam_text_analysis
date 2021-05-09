@@ -66,13 +66,11 @@ class Ramayanam:
     @classmethod
     def load(cls, dbName=DB_FILE, pickleFile=PICKLE_FILE):
         def _readFromPickle(pickleFile):
-            print('Reading from pickle file:{}'.format(pickleFile))
             with open(pickleFile, 'rb') as f:
                 r = pickle.load(f)
                 return r
 
         def _readFromDB(dbName):
-            print('Reading from db:{}'.format(dbName))
             r = cls()
             db = Database(dbName)
 
@@ -85,7 +83,6 @@ class Ramayanam:
                 pickle.dump(r, f)
             
             return r
-
 
         if pickleFile and os.path.exists(pickleFile):
             try:
