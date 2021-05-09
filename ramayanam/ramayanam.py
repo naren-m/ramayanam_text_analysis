@@ -1,12 +1,12 @@
 import pickle
 import os
 
-from database import Database
+from .database import Database
 
 __all__ = ['Ramayanam']
 
-PICKLE_FILE = './ramayanam.pkl'
-DB_FILE = './ramayanam.db'
+PICKLE_FILE = os.path.join(os.getcwd(), 'ramayanam/ramayanam.pkl')
+DB_FILE = os.path.join(os.getcwd(), 'ramayanam/ramayanam.db')
 
 class AttrDict(dict):
     def __setattr__(self, attr, value):
@@ -66,13 +66,13 @@ class Ramayanam:
     @classmethod
     def load(cls, dbName=DB_FILE, pickleFile=PICKLE_FILE):
         def _readFromPickle(pickleFile):
-            print('Reading from pickle file')
+            print('Reading from pickle file:{}'.format(pickleFile))
             with open(pickleFile, 'rb') as f:
                 r = pickle.load(f)
                 return r
 
         def _readFromDB(dbName):
-            print('Reading from db')
+            print('Reading from db:{}'.format(dbName))
             r = cls()
             db = Database(dbName)
 

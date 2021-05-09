@@ -1,1 +1,1 @@
-from .ramayanam import *
+from .ramayanam import Ramayanam
