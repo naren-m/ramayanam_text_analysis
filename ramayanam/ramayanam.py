@@ -5,6 +5,9 @@ from database import Database
 
 __all__ = ['Ramayanam']
 
+PICKLE_FILE = './ramayanam.pkl'
+DB_FILE = './ramayanam.db'
+
 class AttrDict(dict):
     def __setattr__(self, attr, value):
         self[attr] = value
@@ -61,22 +64,22 @@ class Ramayanam:
         self.kandas[kanda.number] = kanda
 
     @classmethod
-    def load(cls, dbName='./ramayanam.db', pickleFile='./ramayanam.pkl'):
+    def load(cls, dbName=DB_FILE, pickleFile=PICKLE_FILE):
         if os.path.exists(pickleFile):
             with open(pickleFile, 'rb') as f:
                 r = pickle.load(f)
                 return r
-        else:
-            r = cls()
-            db = Database(dbName)
 
-            for k, v in r.kandaDetails.items():
-                kanda = Kanda.createKandaFromDict(v, db=db)
-                r.addKanda(kanda)
+        r = cls()
+        db = Database(dbName)
 
-            db.close()
+        for k, v in r.kandaDetails.items():
+            kanda = Kanda.createKandaFromDict(v, db=db)
+            r.addKanda(kanda)
 
-            return r
+        db.close()
+        pickle.dump(r, PICKLE_FILE)
+        return r
 
 
 class Kanda:
