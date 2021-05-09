@@ -3,6 +3,8 @@ import os
 
 from database import Database
 
+__all__ = ['Ramayanam']
+
 class AttrDict(dict):
     def __setattr__(self, attr, value):
         self[attr] = value
@@ -23,7 +25,7 @@ class AttrDict(dict):
         return list(self) + dir(dict)
 
 
-class Ramayana:
+class Ramayanam:
     kandaDetails = dict({
             1: {
                 'id': 1,
@@ -160,10 +162,11 @@ class Sloka:
         sloka = Sloka(sarga, number, text, meaning, translation)
         return sloka
 
-if __name__ == "__main__":
-    r = Ramayana.load()
 
-    s = r.kandas[1].sargas[8].slokas[20]
+if __name__ == "__main__":
+    r = Ramayanam.load()
+
+    s = r.kandas[1].sargas[1].slokas[1]
 
     len(r.kandas[1].sargas[8].slokas)
     print(s)
