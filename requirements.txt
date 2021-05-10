@@ -1,3 +1,6 @@
-fuzzywuzzy
+iterfzf
 fuzzysearch
+pyfiglet
+prompt_toolkit
+ftfy
 pytest
