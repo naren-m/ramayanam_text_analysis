@@ -107,6 +107,10 @@ class Kanda:
     def __str__(self):
         return '{} has {} sargas'.format(self.name, self.totalSargas)
 
+    @property
+    def id(self):
+        return str(self.number)
+
     @classmethod
     def createKandaFromDict(cls, kandaMetadata, db):
         kanda = cls(name=kandaMetadata['name'], number=kandaMetadata['id'], totalSargas=kandaMetadata['sargas'])
@@ -126,6 +130,10 @@ class Sarga:
 
     def __str__(self):
         return 'Sarga {} of {} has {} slokas'.format(self.number, self.kanda.name, len(self.slokas))
+
+    @property
+    def id(self):
+        return '{}.{}'.format(self.kanda.id, self.number)
 
     @classmethod
     def loadFromDB(cls, number, kanda, db):
@@ -150,6 +158,9 @@ class Sloka:
         self._meaning = meaning
         self._translation = translation
 
+    @property
+    def id(self):
+        return '{}.{}'.format(self.sarga.id, self.number)
 
     @property
     def kanda(self):
