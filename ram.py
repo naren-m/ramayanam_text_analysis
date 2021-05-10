@@ -5,9 +5,9 @@ from ramayanam import Ramayanam
 
 r = Ramayanam.load()
 
-s = r.kandas[1].sargas[8].slokas[20]
-print(len(r.kandas[1].sargas[8].slokas))
-print(s)
+s = r.kanda(1).sarga(8).sloka(20)
+
+print(s, s.id)
 
 print(r.kandas[5].sargas[4].slokas[14].id)
 

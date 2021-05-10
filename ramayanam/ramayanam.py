@@ -63,6 +63,9 @@ class Ramayanam:
     def addKanda(self, kanda):
         self.kandas[kanda.number] = kanda
 
+    def kanda(self, id):
+        return self.kandas[id]
+
     @classmethod
     def load(cls, dbName=DB_FILE, pickleFile=PICKLE_FILE):
         def _readFromPickle(pickleFile):
@@ -101,15 +104,18 @@ class Kanda:
         self.totalSargas = totalSargas
         self.sargas = dict()
 
-    def addSarga(self, sarga):
-        self.sargas[sarga.number] = sarga
-
     def __str__(self):
         return '{} has {} sargas'.format(self.name, self.totalSargas)
 
     @property
     def id(self):
         return str(self.number)
+
+    def addSarga(self, sarga):
+        self.sargas[sarga.number] = sarga
+
+    def sarga(self, id):
+        return self.sargas[id]
 
     @classmethod
     def createKandaFromDict(cls, kandaMetadata, db):
@@ -119,14 +125,12 @@ class Kanda:
             kanda.addSarga(sarga)
         return kanda
 
+
 class Sarga:
     def __init__(self, number, kanda):
         self.number = number
         self.kanda = kanda
         self.slokas = dict()
-
-    def addSloka(self, sloka):
-        self.slokas[sloka.number] = sloka
 
     def __str__(self):
         return 'Sarga {} of {} has {} slokas'.format(self.number, self.kanda.name, len(self.slokas))
@@ -134,6 +138,12 @@ class Sarga:
     @property
     def id(self):
         return '{}.{}'.format(self.kanda.id, self.number)
+
+    def addSloka(self, sloka):
+        self.slokas[sloka.number] = sloka
+
+    def sloka(self, id):
+        return self.slokas[id]
 
     @classmethod
     def loadFromDB(cls, number, kanda, db):
