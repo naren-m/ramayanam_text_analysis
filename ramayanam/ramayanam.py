@@ -5,8 +5,8 @@ from .database import Database
 
 __all__ = ['Ramayanam']
 
-PICKLE_FILE = os.path.join(os.getcwd(), 'ramayanam/ramayanam.pkl')
-DB_FILE = os.path.join(os.getcwd(), 'ramayanam/ramayanam.db')
+PICKLE_FILE = os.path.join(os.path.dirname(__file__), 'ramayanam.pkl')
+DB_FILE = os.path.join(os.path.dirname(__file__), 'ramayanam.db')
 
 class AttrDict(dict):
     def __setattr__(self, attr, value):
@@ -66,6 +66,17 @@ class Ramayanam:
     def kanda(self, id):
         return self.kandas[id]
 
+    def all(self):
+        translation = list()
+        print(self.kandas )
+        for k, v in self.kandas.items():
+            print(k, v)
+            print(k, v.all())
+
+            translation.append(v)
+        
+        return translation
+
     @classmethod
     def load(cls, dbName=DB_FILE, pickleFile=PICKLE_FILE):
         def _readFromPickle(pickleFile):
@@ -117,6 +128,15 @@ class Kanda:
     def sarga(self, id):
         return self.sargas[id]
 
+    def all(self):
+        translation = list()
+        print(self.sargas)
+        for k, v in self.sargas.items():
+            print('sargas:', k, v)
+            translation.append(v.all())
+        
+        return translation
+
     @classmethod
     def createKandaFromDict(cls, kandaMetadata, db):
         kanda = cls(name=kandaMetadata['name'], number=kandaMetadata['id'], totalSargas=kandaMetadata['sargas'])
@@ -144,6 +164,13 @@ class Sarga:
 
     def sloka(self, id):
         return self.slokas[id]
+
+    def all(self):
+        translation = list()
+        for k, v in self.slokas.items():
+            translation.append(v.translation)
+        
+        return translation
 
     @classmethod
     def loadFromDB(cls, number, kanda, db):

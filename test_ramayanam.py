@@ -17,7 +17,12 @@ class TestRamayanam(unittest.TestCase):
         expected_sloka_id = '{}.{}.{}'.format(kanda_id, sarga_id, sloka_id)
 
         sloka = r.kanda(kanda_id).sarga(sarga_id).sloka(sloka_id)
-        print(sloka, sloka.id)
-        print(sloka.meaning)
-        print(sloka.translation)
+        # print(sloka, sloka.id)
+        # print(sloka.meaning)
+        # print(sloka.translation)
         self.assertEqual(sloka.id, expected_sloka_id)
+
+    def test_all(self):
+        r = Ramayanam.load()
+        t = r.all()
+        print(t)
