@@ -129,7 +129,7 @@ class Kanda:
     def all(self):
         translation = list()
         for k, v in self.sargas.items():
-            translation.extend(v.all())
+            translation.extend(v.slokas)
         
         return translation
 
@@ -150,6 +150,9 @@ class Sarga:
 
     def __str__(self):
         return 'Sarga {} of {} has {} slokas'.format(self.number, self.kanda.name, len(self.slokas))
+    
+    def __repr__(self) -> str:
+        return str(self)
 
     @property
     def id(self):
@@ -159,14 +162,7 @@ class Sarga:
         self.slokas[sloka.number] = sloka
 
     def sloka(self, id):
-        return self.slokas[id]
-
-    def all(self):
-        translation = list()
-        for k, v in self.slokas.items():
-            translation.append(v.translation)
-        
-        return translation
+        return self.slokas[id-1]
 
     @classmethod
     def loadFromDB(cls, number, kanda, db):
@@ -210,6 +206,9 @@ class Sloka:
     @property
     def text(self):
         return self._text
+
+    def __repr__(self) -> str:
+        return str(self)
 
     def __str__(self):
         if not self.text:

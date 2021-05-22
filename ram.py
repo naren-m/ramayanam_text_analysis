@@ -29,14 +29,18 @@ s = r.kanda(1).sarga(8).sloka(20)
 
 
 
+kanda = r.kanda(1)
+trans_kanda = kanda.all()
 
 print('------------------------------------')
-print("r.all() ", len(r.all()), len(r.all()[1]))
+print(kanda,  len(trans_kanda))
 print('------------------------------------')
+
+translations = trans_kanda[:100]
 
 
 def iter_pokemon(slp=0.01):
-    for l in r.all():
+    for l in translations:
         yield l
         time.sleep(slp)
 
@@ -45,7 +49,8 @@ def main():
     result = iterfzf(iter_pokemon(), multi=True)
     for item in result:
         print(item)
+        # print(ftfy.fix_textitem)
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
