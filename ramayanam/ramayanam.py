@@ -68,12 +68,8 @@ class Ramayanam:
 
     def all(self):
         translation = list()
-        print(self.kandas )
         for k, v in self.kandas.items():
-            print(k, v)
-            print(k, v.all())
-
-            translation.append(v)
+            translation.extend(v.all())
         
         return translation
 
@@ -102,7 +98,6 @@ class Ramayanam:
             try:
                 return _readFromPickle(pickleFile)
             except Exception as e:
-                print('Got Exception reading from pikcle file {}'.format(e))
                 return _readFromDB(dbName)
         else:
             return _readFromDB(dbName)
@@ -118,6 +113,9 @@ class Kanda:
     def __str__(self):
         return '{} has {} sargas'.format(self.name, self.totalSargas)
 
+    def __repr__(self):
+        return str(self)
+
     @property
     def id(self):
         return str(self.number)
@@ -130,10 +128,8 @@ class Kanda:
 
     def all(self):
         translation = list()
-        print(self.sargas)
         for k, v in self.sargas.items():
-            print('sargas:', k, v)
-            translation.append(v.all())
+            translation.extend(v.all())
         
         return translation
 
@@ -232,6 +228,3 @@ if __name__ == "__main__":
     s = r.kandas[1].sargas[1].slokas[1]
 
     len(r.kandas[1].sargas[8].slokas)
-    print(s)
-    print(s.meaning)
-    print(s.translation)
