@@ -73,6 +73,10 @@ class Ramayanam:
         
         return translation
 
+    def details(self):
+        for _, kanda in self.kandas.items():
+            print(kanda)
+
     @classmethod
     def load(cls, dbName=DB_FILE, pickleFile=PICKLE_FILE):
         def _readFromPickle(pickleFile):
@@ -111,7 +115,7 @@ class Kanda:
         self.sargas = dict()
 
     def __str__(self):
-        return '{} has {} sargas'.format(self.name, self.totalSargas)
+        return '{} has {} Sargas and a total of {} Slokas'.format(self.name, self.totalSargas, len(self.all()))
 
     def __repr__(self):
         return str(self)

@@ -33,7 +33,7 @@ kanda = r.kanda(1)
 trans_kanda = kanda.all()
 
 print('------------------------------------')
-print(kanda,  len(trans_kanda))
+print(r.details())
 print('------------------------------------')
 
 translations = trans_kanda[:100]
