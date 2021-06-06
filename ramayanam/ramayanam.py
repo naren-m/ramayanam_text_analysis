@@ -60,6 +60,10 @@ class Ramayanam:
     def __init__(self):
         self.kandas = dict()
 
+    def __iter__(self):
+        for _, kanda in self.kandas.items():
+            yield kanda
+
     def addKanda(self, kanda):
         self.kandas[kanda.number] = kanda
 
@@ -120,6 +124,10 @@ class Kanda:
     def __repr__(self):
         return str(self)
 
+    def __iter__(self):
+        for _, sarga in self.sargas.items():
+            yield sarga
+
     @property
     def id(self):
         return str(self.number)
@@ -157,6 +165,10 @@ class Sarga:
     
     def __repr__(self) -> str:
         return str(self)
+
+    def __iter__(self):
+        for _, sloka in self.slokas.items():
+            yield sloka
 
     @property
     def id(self):
