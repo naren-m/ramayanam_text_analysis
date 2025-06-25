@@ -1,7 +1,7 @@
 # Cli for reading ramayanam
 
 ## Folder structure
-
+```
 -RamyanaSlokas
 |
 |
@@ -11,6 +11,7 @@
     -- Sarga-sloka file contains all slokas fo that sarga
     -- Sarga-meaning file contains all meanings fo that sarga
     -- Sarga-translation file contains all translations fo that sarga
+<<<<<<< HEAD
 
 ## Ramayana Commentaries Downloader
 
@@ -74,3 +75,6 @@ The `commentaries_index.json` file contains metadata about each downloaded comme
 - Kanda and Sarga numbers
 - Absolute file path
 - Download timestamp
+=======
+```
+>>>>>>> 42e65c54b8ab9ac902edfb707cda2602821a97fe
