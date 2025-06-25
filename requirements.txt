@@ -4,3 +4,6 @@ pyfiglet
 prompt_toolkit
 ftfy
 pytest
+requests
+beautifulsoup4
+tqdm
