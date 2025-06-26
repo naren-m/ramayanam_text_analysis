@@ -21,7 +21,8 @@ KandaList.append(KandaDetails)
 KandaDetails = {'num': 4, 'name': "KishkindaKanda", 'sargas': 67}
 KandaList.append(KandaDetails)
 KandaDetails = {'num': 5, 'name': "SundaraKanda", 'sargas': 68}
-
+KandaList.append(KandaDetails)
+KandaDetails = {'num': 6, 'name': "YuddhaKanda", 'sargas': 128}
 KandaList.append(KandaDetails)
 
 
@@ -33,7 +34,7 @@ def clean_text(text):
 
 
 def generate_url(kanda, sarga, language="dv"):
-    url = "http://www.valmiki.iitk.ac.in/sloka?field_kanda_tid=" + \
+    url = "https://www.valmiki.iitk.ac.in/sloka?field_kanda_tid=" + \
         kanda + "&language=" + language + "&field_sarga_value=" + sarga
     return url
 

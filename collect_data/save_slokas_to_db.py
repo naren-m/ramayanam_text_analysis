@@ -21,7 +21,8 @@ KandaList.append(KandaDetails)
 KandaDetails = {'num': 4, 'name': "KishkindaKanda", 'sargas': 67}
 KandaList.append(KandaDetails)
 KandaDetails = {'num': 5, 'name': "SundaraKanda", 'sargas': 68}
-
+KandaList.append(KandaDetails)
+KandaDetails = {'num': 6, 'name': "YuddhaKanda", 'sargas': 128}
 KandaList.append(KandaDetails)
 
 common_cols = ["kanda_id", "sarga_id", "sloka_id"]
@@ -145,7 +146,7 @@ def main():
     with conn:
         # save dataframe to database
         slokas_df.to_sql(name="slokas", con=conn)
-        verify_sloka_count(conn, 13102)
+        verify_sloka_count(conn, 18422)
 
     # Delete the dataframe
     del slokas_df
